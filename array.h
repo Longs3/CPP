@@ -28,7 +28,7 @@ using namespace std;
  * for further description read the comment on top of each method
  *
  *
- * add          done
+ * append          done
  * assign       done
  * charInt      done
  * indexOf      done
@@ -36,7 +36,7 @@ using namespace std;
  * intChar      done
  * len          done
  * permutation  done
- * remove       done
+ * pop       done
  * reverse      done
  * sort         done
  * split        done
@@ -53,100 +53,24 @@ private:
 public:
     // constructor
     Array() {}
-    Array(vector<T> arr) { for (auto& i : arr) this->arr.push_back(i); }
-    Array(T* arr) { int ctr = extent<decltype(arr)>::value;for (int i = 0;i < ctr;i++) this->arr.push_back(arr[i]); }
+    Array(const vector<T>&);
+    Array(T*);
     // destructor
-    ~Array() { arr.clear(); }
+    ~Array();
 
     // function for the array
-
-    /*This append value at the back of the object's array. */
-    void add(T value) { arr.push_back(value); }
-    void add(vector<int> arr) { for (auto& i : arr) this->arr.push_back(i); }
-    /*The first perameter is to specify the location at which the value is to be place inside the object's array. The second is the value itself.*/
-    void assign(int at, T value) { arr[at] = value; }
-
+    void append(T); /*This append value at the back of the object's array. */
+    void append(vector<int>&);
+    void assign(int, T);/*The first perameter is to specify the location at which the value is to be place inside the object's array. The second is the value itself.*/
     /*This method will take the object's array(char) and return an object's array(int) if possible. If not, it will return an object's array contain a zero*/
-    Array<int> charInt() { Array<char> ans({ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });Array<int> output, outp({ 0 }); output.remove();for (auto& i : arr) { output.add(ans.indexOf(i)); if (ans.indexOf(i) == -1) return  outp; } return output; }
-
-
-    int findNum(int value, int which) {
-        Array<int> arr({ 0,1,2,3,4,5,6,7,8,9 });
-        Array<int> outp;
-        if (arr.indexOf(which) == -1) return 0;
-        if (value <= 0) return 0;
-        int ctr = 0, check;
-        for (int i = value; i >= 0;i--) {
-            check = outp.split(i).len();
-            for (int j = 0;j < check;j++)
-                if (outp.split(i).indexOf(which) != -1) ctr++;
-        }
-        return ctr;
-    }
-
-    /*This method will search through the object's array and try to find the value if the value is not found it will return -1.*/
-    int indexOf(T value) { int ctr = 0; for (auto& i : arr) { if (i == value) return ctr;ctr++; } return -1; }
-
-    /*This method takes two arguments. The first one is for the position that is to be inserted. If the position is greater than the array length, then the value will be added to the last index. The second one is the value that is to be inserted*/
-    void insert(int at, T value) { int ctr = len();arr.push_back(valueAt(ctr - 1)); for (int i = ctr - 1;i > at;i--) swap(i, i - 1);assign(at, value); }
-
+    Array<int> charInt() { Array<char> ans({ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });Array<int> output, outp({ 0 }); output.pop();for (auto& i : arr) { output.append(ans.indexOf(i)); if (ans.indexOf(i) == -1) return  outp; } return output; }
+    int indexOf(T); /*This method will search through the object's array and try to find the value if the value is not found it will return -1.*/
+    void insert(int, T); /*This method takes two arguments. The first one is for the position that is to be inserted. If the position is greater than the array length, then the value will be appended to the last index. The second one is the value that is to be inserted*/
     /*This will use the object's array and return an array if the value is convertable else it will return an empty array*/
-    Array<char> intChar() { Array<char> ans({ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }), outp;Array<int> check({ 0,1,2,3,4,5,6,7,8,9 }); for (auto& i : arr) if (check.indexOf(i) == -1) return outp; for (auto& i : arr) { outp.add(ans.valueAt(i)); } return outp; }
-
-    /*This will return the object's array length*/
-    int len() { return this->arr.size(); }
-
-    vector<vector<T>> permutation(Array<int> arrd) {
-        int ctr = arrd.len(), fac = 1;
-        for (int i = 3;i < ctr;i++) fac *= i;
-        vector<vector<T>> temp;
-        temp.push_back(arrd.arr);
-        for (int i = 0;i < fac - 1;i++) {
-            if (arrd.valueAt(i) != arrd.valueAt(i + 1)) {
-                arrd.swap(i % ctr, (i + 1) % ctr);
-                temp.push_back(arrd.arr);
-            }
-        }
-        ctr = temp.size();
-        for (int i = 0;i < ctr;i++) {
-            Array<T> arra(temp[i]);
-            bool isthere=false;
-            arra.reverse();
-            for (int j = 0;j < temp.size();j++) {
-                if (arra.arr == temp[j]) isthere = true;
-            }
-            if(!isthere)
-            temp.push_back(arra.arr);
-        }
-        return temp;
-    }
-    vector<vector<T>> permutation() {
-        int ctr = len(), fac = 1;
-        for (int i = 3;i <= ctr;i++) fac *= i;
-        vector<vector<T>> temp;temp.push_back(arr);
-        for (int i = 0;i < fac - 1;i++) {
-            if (valueAt(i) != valueAt(i + 1)) {
-                swap(i % ctr, (i + 1) % ctr);
-                temp.push_back(arr);
-            }
-        }
-        ctr = temp.size();
-        for (int i = 0;i < ctr;i++) {
-            Array<T> arra(temp[i]);
-            bool isthere = false;
-            arra.reverse();
-            for (int j = 0;j < temp.size();j++) {
-                if (arra.arr == temp[j]) isthere = true;
-            }
-            if (!isthere)
-                temp.push_back(arra.arr);
-        }
-        return temp;
-    }
-
-    /*This will remove the array item at a specific location. If the location is not specify, it will remove the last item of the object's array.*/
-    void remove(int at = -1) { if (at == -1) { arr.pop_back(); return; } int ctr = len(); if (at >= ctr) { arr.pop_back(); return; } for (int i = at;i < ctr - 1;i++) { swap(i, i + 1); } arr.pop_back(); }
-
+    Array<char> intChar() { Array<char> ans({ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }), outp;Array<int> check({ 0,1,2,3,4,5,6,7,8,9 }); for (auto& i : arr) if (check.indexOf(i) == -1) return outp; for (auto& i : arr) { outp.append(ans.valueAt(i)); } return outp; }
+    int len(); /*This will return the object's array length*/
+    vector<vector<T>> permutation();    // This method return all the posible permutation of the current array
+    void pop(int);/*This will pop the array item at a specific location. If the location is not specify, it will pop the last item of the object's array.*/
     /*This will reverse the object's array*/
     void reverse() { int ctr = len(); for (int i = 0;i < ctr / 2;i++) { swap(i, ctr - 1 - i); } }
 
@@ -154,44 +78,67 @@ public:
     void sort() { int ctr = len(); for (int i = 0;i < ctr;i++) for (int j = 0;j < ctr - 1;j++) if (valueAt(j) > valueAt(j + 1)) swap(j, j + 1); }
 
     /*This will take the whole number and convert it into an array of sigle digit*/
-    Array<int> split(int x) { Array<int> output;for (;;) { if (x < 10) { output.add(x);break; }output.add(x % 10);x /= 10; }output.reverse();return output; }
+    Array<int> split(int x) { Array<int> output;for (;;) { if (x < 10) { output.append(x);break; }output.append(x % 10);x /= 10; }output.reverse();return output; }
 
     /*This will take the whole string and convert it into an array of character*/
-    Array<char> split(string x) { Array<char> output; int ctr = x.length(); for (int i = 0;i < ctr;i++) output.add(x[i]); return output; }
+    Array<char> split(string x) { Array<char> output; int ctr = x.length(); for (int i = 0;i < ctr;i++) output.append(x[i]); return output; }
     /*This method swap two item in the array at the two specify locations.*/
-    void swap(int at, int where) { float temp = valueAt(at); assign(at, valueAt(where));assign(where, temp); }
+    void swap(int , int );
     /*this method will find all the unique item in the array*/
-    Array<T> unique() { Array<T> temp;int check = 0, ctr = len(), ctr1 = 1;for (int i = 0;i < ctr;i++) { if (temp.len() == 0) temp.add(valueAt(i));for (int j = 0;j < ctr1;j++) { check = temp.indexOf(valueAt(i));if (check == -1) { ctr1++; break; } }if (check == -1)  temp.add(valueAt(i)); }return temp; }
-
+    Array<T> unique();
     /*return the value at the specify index.*/
-    T valueAt(int at) { return arr[at]; }
-
-    // some operator that can be used
-    Array<int> process(Array<int>& arr) { int first = len(), second = arr.len();Array<int> temp;(first > second) ? temp.add(this->arr) : temp.add(arr.arr);return temp; }
-    Array<int> operator+(Array<int>& arr) { Array<int> temp(process(arr)); int ctr = temp.len(); for (int i = 0;i < ctr;i++) temp.assign(i, valueAt(i) + arr.valueAt(i)); return temp; }
-    Array<int> operator-(Array<int>& arr) { Array<int> temp(process(arr)); int ctr = temp.len(); for (int i = 0;i < ctr;i++) temp.assign(i, valueAt(i) - arr.valueAt(i)); return temp; }
-    Array<int> operator*(Array<int>& arr) { Array<int> temp(process(arr)); int ctr = temp.len(); for (int i = 0;i < ctr;i++) temp.assign(i, valueAt(i) * arr.valueAt(i)); return temp; }
-    Array<int> operator/(Array<int>& arr) { Array<int> temp(process(arr)); int ctr = temp.len(); for (int i = 0;i < ctr;i++) temp.assign(i, valueAt(i) / arr.valueAt(i)); return temp; }
-    Array<int> operator%(Array<int>& arr) { Array<int> temp(process(arr)); int ctr = temp.len(); for (int i = 0;i < ctr;i++) temp.assign(i, valueAt(i) % arr.valueAt(i)); return temp; }
-
-    Array<int> operator~() { int ctr = len(); for (int i = 0;i < ctr;i++) assign(i, -valueAt(i)); return arr; }
-
-    Array<int> operator+(int x) { int ctr = len(); for (int i = 0;i < ctr;i++) assign(i, valueAt(i) + x); return arr; }
-    Array<int> operator-(int x) { int ctr = len(); for (int i = 0;i < ctr;i++) assign(i, valueAt(i) - x); return arr; }
-    Array<int> operator*(int x) { int ctr = len(); for (int i = 0;i < ctr;i++) assign(i, valueAt(i) * x); return arr; }
-    Array<int> operator/(int x) { int ctr = len(); for (int i = 0;i < ctr;i++) assign(i, valueAt(i) / x); return arr; }
-    Array<int> operator%(int x) { int ctr = len(); for (int i = 0;i < ctr;i++) assign(i, valueAt(i) % x); return arr; }
-    friend ostream& operator<<(ostream& os, const Array& arr) { for (auto& i : arr.arr) os << i << " ";return os; }
-    friend bool operator==(vector<T>& a, vector<T>& b);
-
+    T valueAt(int at);
 };
-template<typename T>
-bool operator==(vector<T> a, vector<T> b) {
-    int alen = a.size(), blen = b.size();
-    for (int i = 0;i < min(alen, blen);i++) {
-        if (a[i] != b[i]) return false;
-    }
-    return true;
+template<class T>
+Array<T>::Array(const vector<T>& array) {
+    for (auto i : array) append(i);
 }
-
+template<class T>
+Array<T>::Array(T* arr) { int ctr = extent<decltype(arr)>::value;for (int i = 0;i < ctr;i++) this->arr.push_back(arr[i]); }
+template<class T>
+Array<T>::~Array() { arr.clear(); }
+template<class T>
+void Array<T>::assign(int at, T value) { arr[at] = value; }
+template<class T>
+void Array<T>::append(T value) { arr.push_back(value); }
+template<class T>
+void Array<T>::append(const vector<int>& arr) { for (auto i : arr) this->arr.push_back(i); }
+template<class T>
+int Array<T>::indexOf(T value) { int ctr = 0; for (auto& i : arr) { if (i == value) return ctr;ctr++; } return -1; }
+template<class T>
+void Array<T>::insert(int at, T value) { int ctr = len();arr.push_back(valueAt(ctr - 1)); for (int i = ctr - 1;i > at;i--) swap(i, i - 1);assign(at, value); }
+template<class T>
+int Array<T>::len() { return this->arr.size(); }
+template<class T>
+void Array<T>::swap(int at, int where) { float temp = valueAt(at); assign(at, valueAt(where));assign(where, temp); }
+template<class T>
+vector<vector<T>> Array<T>::permutation() {
+    int ctr = len(), fac = 1;
+    for (int i = 3;i <= ctr;i++) fac *= i;
+    vector<vector<T>> temp;temp.push_back(arr);
+    for (int i = 0;i < fac - 1;i++) {
+        if (valueAt(i) != valueAt(i + 1)) {
+            swap(i % ctr, (i + 1) % ctr);
+            temp.push_back(arr);
+        }
+    }
+    ctr = temp.size();
+    for (int i = 0;i < ctr;i++) {
+        Array<T> arra(temp[i]);
+        bool isthere = false;
+        arra.reverse();
+        for (int j = 0;j < temp.size();j++) {
+            if (arra.arr == temp[j]) isthere = true;
+        }
+        if (!isthere)
+            temp.push_back(arra.arr);
+    }
+    return temp;
+}
+template<class T>
+Array<T> Array<T>::unique() { Array<T> temp;int check = 0, ctr = len(), ctr1 = 1;for (int i = 0;i < ctr;i++) { if (temp.len() == 0) temp.append(valueAt(i));for (int j = 0;j < ctr1;j++) { check = temp.indexOf(valueAt(i));if (check == -1) { ctr1++; break; } }if (check == -1)  temp.append(valueAt(i)); }return temp; }
+template<class T>
+T Array<T>::valueAt(int at) { return arr[at]; }
+template<class T>
+void Array<T>::pop(int at = -1) { if (at == -1) { arr.pop_back(); return; } int ctr = len(); if (at >= ctr) { arr.pop_back(); return; } for (int i = at;i < ctr - 1;i++) { swap(i, i + 1); } arr.pop_back(); }
 #endif
