@@ -7,11 +7,26 @@
 
 template<class T>
 class Double_node {
-public:
+private:
     Double_node<T> *next, *prev;   // Pointer to the next and previous node
     T data;     // Data of the current node
-    Double_node() : next(NULL), prev(NULL), data(NULL) {}   // When an object is initialized everything is NULL
+public:
+    T getData() const;
+    Double_node<T>* getNext();
+    Double_node<T>* getPrev();
+    void setNext(Double_node<T>*);
+    void setPrev(Double_node<T>*);
 };
 
+template<class T>
+T Double_node<T>::getData() const { return data; }
+template<class T>
+Double_node<T>* Double_node<T>::getNext() { return next; }
+template<class T>
+Double_node<T>* Double_node<T>::getPrev() { return prev; }
+template<class T>
+void Double_node<T>::setNext(Double_node<T>* next) { this->next = next; }
+template<class T>
+void Double_node<T>::setPrev(Double_node<T>* prev) { this->prev = prev; }
 
 #endif //DOUBLE_NODE_H
