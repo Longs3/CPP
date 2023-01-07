@@ -26,6 +26,7 @@ public:
     void push_back(T value);        // adding a node at the back of the linked list
     T pop_front();       // removing the first node in the linked list
     void swap(Double_list<T>&);
+    void swapNode(int, int);
     int erase(const T&);   // remove the first node that has the same value as the parameter 
     void setHead(Double_node<T>*);
     void setTail(Double_node<T>*);
@@ -151,6 +152,42 @@ void Double_list<T>::swap(Double_list<T>& list) {
     list.setTail(tail());        // Changing the list_tail pointer of the parameter to this object list_tail pointer
     setHead(temp->head());       // Changing the list_head pointer of this object to the temp list_head pointer 
     setTail(temp->tail());       // Changing the list_tail pointer of this object to the temp list_tail pointer 
+}
+template<class T>
+void Double_list<T>::swapNode(int first, int second) {
+    if (min(first, second) <= 0) return;
+    if (first == second) return;
+    if (max(first, second) > size()) return;
+
+
+    Double_node<T>* node1 = new Double_node<T>;     //
+    Double_node<T>* node2 = new Double_node<T>;
+    Double_node<T>* node3 = new Double_node<T>;
+    Double_node<T>* node4 = new Double_node<T>;
+
+    Double_node<T>* iterate = new Double_node<T>;
+    iterate = head();
+    int ctr = 1;
+    while (iterate) {
+        if (ctr == first)
+            node1 = iterate;
+
+        if (ctr == second)
+            node2 = iterate;
+
+        ctr++;
+        iterate = iterate->next;
+    }
+    node3 = node1->next;
+    node4 = node2->next;
+    node1->next = node4;
+    node2->next = node3;
+
+
+    node3 = node1->prev;
+    node4 = node2->prev;
+    node1->prev = node4;
+    node2->prev = node3;
 }
 
 template<class T>
