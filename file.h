@@ -13,5 +13,5 @@ public:
     bool deleteFile();
 };
 File::File(string path): name(path){}
-File::deleteFile() { return !remove(name.c_str()); }
+bool File::deleteFile() { return !remove(name.c_str()); }
 #endif
