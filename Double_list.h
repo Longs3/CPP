@@ -134,6 +134,11 @@ T Double_list<T>::pop_front() {      // removing the first node in the linked li
         cout << "Underflow" << endl;
         return NULL;     // exit the function if the list is empty
     }
+    if (size() == 1) {
+        list_head = list_tail = nullptr;
+        len--;
+        return;
+    }
     Double_node<T>* temp = head();      // assigning the new pointer node object to the head
     list_head = temp->getNext();     // moving the list_head pointer to next pointer
     T data = temp->getData();
